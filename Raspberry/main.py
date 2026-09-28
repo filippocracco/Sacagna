@@ -166,7 +166,7 @@ def main(camdx_q, camsx_q, vittima):
                 lett = laser.read(i)
                 laser_mm[i] = lett
             
-            bno.begin()
+            bno.zero()
             
              #RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO#RADDRIZZO
             if ck==1:    
@@ -542,7 +542,7 @@ def main(camdx_q, camsx_q, vittima):
                    
                 elif direzione == 3:
                     print('Ruoto di 180 gradi a destra')
-                    bno.begin()
+                    bno.zero()
                     bno_ANG = bno.readAngleRot()
                     if bno_ANG > 180:
                         bno_ANG -= 360
@@ -746,7 +746,7 @@ def main(camdx_q, camsx_q, vittima):
                     print('finecorsa -1 s')
                     xNow=xStart
                     yNow=yStart
-                bno.begin()
+                bno.zero()
                 print('slida destra s')#finecorsa sinistra
                 ser.writeMot(2.0, 0.5, 2, 2)
                 time.sleep(0.5)
@@ -765,7 +765,7 @@ def main(camdx_q, camsx_q, vittima):
                     print('finecorsa -1 d')
                     xNow=xStart
                     yNow=yStart
-                bno.begin()
+                bno.zero()
                 print ('slide sinistra d')#finecorsa destra
                 ser.writeMot(0.5, 2.0, 2, 2)
                 time.sleep(0.5)

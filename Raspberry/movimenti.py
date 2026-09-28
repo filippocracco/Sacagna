@@ -70,11 +70,14 @@ class MOVIMENTI:
         self.bno = BNO055()
         self.apds = APDS9960()
         self.pid = PID()
+        self.apds_ok = False
 
     def avanti(self, cm = 26.5, nero = 700, blu = 300, centro = 0, finale = 0):
         
-        self.apds.begin()
-        self.bno.begin()
+        if not self.apds_ok: # l'APDS basta configurarlo una volta
+            self.apds.begin()
+            self.apds_ok = True
+        self.bno.zero()
         self.pid.reset()
         for i in range (10):
             ang_bno = self.bno.readAngleRot()

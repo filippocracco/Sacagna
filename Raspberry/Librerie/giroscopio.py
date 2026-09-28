@@ -32,6 +32,8 @@ class BNO055:
         self._sensorId = sensorId
         self._address = address
         self._mode = BNO055.OPERATION_MODE_IMUPLUS
+        self._offset = 0.0
+        self._bus = smbus.SMBus(1)
     
     def begin(self, mode=None):
         if mode is None: mode = self._mode
@@ -62,9 +64,10 @@ class BNO055:
         self.setMode(mode)
         time.sleep(0.02)
 
+        self._offset = 0.0
         return True
     
-    def readAngleRot(self):
+    def readAngleRotRaw(self):
         buf = self.readBytes(BNO055.VECTOR_EULER, 6)
         xyz = struct.unpack('h', struct.pack('BB', buf[0], buf[1]))
         out = xyz[0]/16.0
@@ -73,6 +76,13 @@ class BNO055:
         elif out <= 0:
             out = 0
         return out
+    
+    def zero(self):
+        # heading attuale come nuovo zero, al posto del reset con begin()
+        self._offset = self.readAngleRotRaw()
+    
+    def readAngleRot(self):
+        return (self.readAngleRotRaw() - self._offset) % 360
     
     def readAngleInc(self):
         buf = self.readBytes(BNO055.VECTOR_EULER, 6)
